@@ -2,16 +2,7 @@ name: Supabase Keep-Alive
 
 on:
   schedule:
-    #  Runs every day at 8:00 AM UTC
-    #  ┌─ minute (0)
-    #  │ ┌─ hour (8 = 8am UTC)
-    #  │ │ ┌─ day of month (* = every day)
-    #  │ │ │ ┌─ month (* = every month)
-    #  │ │ │ │ ┌─ day of week (* = every day)
     - cron: '0 8 * * *'
-
-  # Allows you to trigger this manually from GitHub UI
-  # Go to Actions tab → Select workflow → Run workflow button
   workflow_dispatch:
 
 jobs:
@@ -20,26 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Pull your code onto the VM
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Set up Python
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'            # caches pip packages → faster runs
+          cache: 'pip'
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # Step 4: Run the keep-alive script
-      # Secrets are injected here — never hardcode these values
+      - name: Debug key format
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          echo "Key length: ${#SUPABASE_ANON_KEY}"
+          echo "First 6 chars: ${SUPABASE_ANON_KEY:0:6}"
+
       - name: Run keep-alive ping
         env:
-          SUPABASE_URL:      ${{ secrets.SUPABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          PING_TABLE:        keepalive_log
+          PING_TABLE: keepalive_log
         run: python keepalive.py
