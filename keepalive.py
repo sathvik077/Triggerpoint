@@ -1,10 +1,11 @@
 import os
 import sys
 from datetime import datetime, timezone
+# from dotenv import load_dotenv
 from dotenv import load_dotenv
 from supabase import create_client, Client
 
-load_dotenv() 
+# load_dotenv() 
 # ── Config ────────────────────────────────────────────────────────────────────
 SUPABASE_URL  = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY  = os.environ.get("SUPABASE_ANON_KEY")
