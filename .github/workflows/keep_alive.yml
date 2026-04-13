@@ -34,5 +34,5 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-          PING_TABLE: keepalive_log
+          PING_TABLE: ${{ secrets.PING_TABLE }}
         run: python keepalive.py
