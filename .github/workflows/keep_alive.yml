@@ -23,13 +23,6 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Debug key format
-        env:
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: |
-          echo "Key length: ${#SUPABASE_ANON_KEY}"
-          echo "First 6 chars: ${SUPABASE_ANON_KEY:0:6}"
-
       - name: Run keep-alive ping
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
